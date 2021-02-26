@@ -1,0 +1,313 @@
+<!-- Konrad Krupa 2020 -->
+<!-- A JS-based interactive animation with complex CSS values made to serve as a performance test -->
+
+<html>
+	<head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" 
+            integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" 
+            crossorigin="anonymous" 
+        />	
+        <link href='https://fonts.googleapis.com/css?family=Audiowide|Iceberg|Marck+Script' 
+            rel='stylesheet' 
+            type='text/css'
+        >
+    </head>
+    <style>
+
+        *, *:before, *:after {
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #60c;
+            background: -webkit-linear-gradient(270deg, #26a, #60c);
+            background: -moz-linear-gradient(270deg, #26a, #60c);
+            background: linear-gradient(270deg, #26a, #60c);
+        }
+
+        h1 {
+            margin: 0;
+            text-align: center; 
+            font-family: 'Audiowide';
+            color: #fff;
+            font-size: 5em;
+            transition: all .5s;
+            text-transform: uppercase;
+            font-style: italic;
+        }
+
+        h2,h3 {
+            font-family: 'Iceberg';
+            color: #fff;
+            text-align: center;
+            font-size: 2em;
+            text-transform: uppercase;
+            font-style: italic;   
+        }
+
+        .wrapper {
+            width: 100vw;
+            height: 100%;
+            position: fixed;
+            padding: 0 5%;
+        }
+
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .counters {
+            position: absolute;
+            bottom: 2em;
+            left: 0;
+            width: 100%;
+            padding: 0 5%;
+        }
+
+        .neon-anim-1 {
+            color: #fff;
+            -webkit-animation: neon1 1.5s ease-in-out infinite alternate;
+            -moz-animation: neon1 1.5s ease-in-out infinite alternate;
+            animation: neon1 1.5s ease-in-out infinite alternate;
+        }
+
+        .neon-anim-2 {
+            color: #fff;
+            -webkit-animation: neon2 1.5s ease-in-out infinite alternate;
+            -moz-animation: neon2 1.5s ease-in-out infinite alternate;
+            animation: neon2 1.5s ease-in-out infinite alternate;
+        }
+
+        .arcymak-wrapper {
+            cursor: pointer;
+            flex-grow: 1;
+            width: 25em;
+            position: relative;
+            top: 0;
+            border-radius: 100%;
+            border: 10px solid #fff;
+            overflow: hidden;
+        }
+
+        .arcymak-wrapper:first-child {
+            box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #228DFF, 0 0 25px #228DFF, 0 0 30px #228DFF, 0 0 35px #228DFF,
+            inset 0 0 5px #fff, inset 0 0 10px #fff, inset 0 0 15px #fff, inset 0 0 20px #228DFF, inset 0 0 25px #228DFF, inset 0 0 30px #228DFF, inset 0 0 35px #228DFF;
+        }
+
+        .arcymak-wrapper:last-child {
+            box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #FF1177, 0 0 25px #FF1177, 0 0 30px #FF1177, 0 0 35px #FF1177,
+            inset 0 0 5px #fff, inset 0 0 10px #fff, inset 0 0 15px #fff, inset 0 0 20px #FF1177, inset 0 0 25px #FF1177, inset 0 0 30px #FF1177, inset 0 0 35px #FF1177;
+        }
+
+        .arcymak {
+            display: block;
+            width: 100%;
+            padding-bottom: 100%;
+            background-size: 100%;
+            background-repeat: no-repeat;
+            transition: transform 2s;
+        }
+        .arcymak:hover {
+            transform: rotate(30deg);
+        }
+
+        .arcymak.left {
+            background-image: url("assets/arcymak-left.png");
+        }
+        .arcymak.right {
+            background-image: url("assets/arcymak-right.png");
+        }
+
+        .game-over {
+            background: rgba(0,0,0,.7);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+
+        .game-over-message {
+            text-align: center; 
+            font-family: 'Audiowide';
+            color: #fff;
+            font-size: 2em;
+            -webkit-animation: neon1 1.5s ease-in-out infinite alternate;
+            -moz-animation: neon1 1.5s ease-in-out infinite alternate;
+            animation: neon1 1.5s ease-in-out infinite alternate;
+        }
+
+        .game-over button {
+            font-family: 'Iceberg';
+            text-transform: uppercase;
+            font-style: italic;
+            background: none;
+            color: #fff;
+            font-size: 3em;
+            padding: 2em;
+            border: 5px solid #fff;
+            border-radius: 16px;
+            transition: all 0.3s;
+            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #FF1177, 0 0 35px #FF1177, 0 0 40px #FF1177, 0 0 50px #FF1177;
+            box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #228DFF, 0 0 25px #228DFF, 0 0 30px #228DFF, 0 0 35px #228DFF, 0 0 45px #228DFF,
+            inset 0 0 5px #fff, inset 0 0 10px #fff, inset 0 0 15px #fff, inset 0 0 20px #228DFF, inset 0 0 25px #228DFF, inset 0 0 30px #228DFF, inset 0 0 35px #228DFF, inset 0 0 45px #228DFF;
+        }
+
+        .game-over button:hover {
+            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #228DFF, 0 0 35px #228DFF, 0 0 40px #228DFF, 0 0 50px #228DFF;
+            box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #FF1177, 0 0 25px #FF1177, 0 0 30px #FF1177, 0 0 35px #FF1177, 0 0 45px #FF1177,
+            inset 0 0 5px #fff, inset 0 0 10px #fff, inset 0 0 15px #fff, inset 0 0 20px #FF1177, inset 0 0 25px #FF1177, inset 0 0 30px #FF1177, inset 0 0 35px #FF1177, inset 0 0 45px #FF1177;
+        }
+
+        @keyframes neon1 {
+            from {
+                text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 40px #FF1177, 0 0 70px #FF1177, 0 0 80px #FF1177, 0 0 100px #FF1177;
+            }
+            to {
+                text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #FF1177, 0 0 35px #FF1177, 0 0 40px #FF1177, 0 0 50px #FF1177;
+            }
+        }
+        @keyframes neon2 {
+            from {
+                text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 40px #228DFF, 0 0 70px #228DFF, 0 0 80px #228DFF, 0 0 100px #228DFF;
+            }
+            to {
+                text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #228DFF, 0 0 35px #228DFF, 0 0 40px #228DFF, 0 0 50px #228DFF;
+            }
+        }
+    </style>
+
+	<body>
+
+        <div class="wrapper game-window" id="game-window">
+            <div class="container flex-container" id="konwent">
+                <div class="arcymak-wrapper" id="czerwony">
+                    <span class="arcymak left"></span>
+                </div>
+                <div>
+                    <h1 class="neon-anim-1">Klikaj</h1>
+                </div>
+                <div class="arcymak-wrapper" id="niebieski">
+                    <span class="arcymak right"></span>
+                </div>
+            </div>
+            
+            <div class="container counters">
+                <h2 class="neon-anim-2">Czas</h2>
+                <h3 class="neon-anim-2" id="counter">0</h3>
+            </div>
+        </div>
+        <div class="wrapper game-over" id="game-over"> 
+            <h1 class="neon-anim-2">Niestety.</h1>
+            <span class="game-over-message" id="game-over-message"></span>
+            <button id="start-game">Zagraj znowu!</button>
+        </div>
+
+        <script>
+            const turns = [0,0];
+            const gameWindow = document.getElementById('game-window');
+            const container = document.getElementById('konwent');
+            const counterElement = document.getElementById('counter');
+            const niebieski = document.getElementById('niebieski');
+            const czerwony = document.getElementById('czerwony'); 
+
+            
+            const gameOverScreen = document.getElementById('game-over');
+            const gameOverMessage = document.getElementById('game-over-message');
+            const startGameButton = document.getElementById('start-game');
+
+            const gameState = {
+                time: 0,
+                screenSize: window.innerHeight,
+                czerwony: 0,
+                niebieski: 0,
+                timer: undefined,
+                frameRequester: undefined,
+                state: '',
+                observer: new IntersectionObserver(gameOver),
+                speed: 0.25,
+                bump: 2.75
+            };
+
+            // game interaction
+            window.onblur = function() { window.blurred = true; };
+            window.onfocus = function() { window.blurred = false; };
+
+            container.addEventListener('click', (event) => {
+                if (event.target.classList.contains('arcymak')) {
+                    gameState[event.target.parentNode.id] -= gameState.bump;
+                }
+            }, true);
+
+            startGameButton.addEventListener('click', (event) => {
+                if (gameState.state = 'over') gameSetup();
+            })
+
+            // setting initial state
+            function gameSetup() {
+                gameState.time = 0;
+                gameState.czerwony = 0;
+                gameState.niebieski = 0;
+                gameState.state = 'running';
+                gameOverScreen.style.visibility = 'hidden';
+                startLoop();
+            };
+
+            function startLoop() {
+                runTimer();
+                gameLoop();
+                checkGameOver();
+            };
+
+            function gameLoop() {
+                updatePositions();
+                gameState.frameRequester = window.requestAnimationFrame(gameLoop);
+            };
+
+            function runTimer() {
+                gameState.timer = setInterval(() => {
+                    if (!window.blurred)
+                        gameState.time = 1 + gameState.time;
+                        counterElement.innerText = gameState.time;
+                }, 1000);
+            };
+
+            function checkGameOver() {
+                gameState.observer.observe(niebieski);
+                gameState.observer.observe(czerwony);                
+            }
+
+            function gameOver(objects) {
+                if(objects.every((object) => (object.intersectionRatio == 0)) && gameState.state == 'running') {
+                    gameState.state = 'over';
+                    showGameOverScreen();
+                }
+            }
+
+            function determineLoser() {
+                return gameState.niebieski > gameState.czerwony ? 'niebieski' : 'czerwony';
+            }
+
+            function showGameOverScreen() {
+                clearInterval(gameState.timer);
+                cancelAnimationFrame(gameState.frameRequester);
+                gameState.observer.unobserve(niebieski);
+                gameState.observer.unobserve(czerwony);
+                
+                gameOverMessage.innerText = `po ${gameState.time} sekundach, ${determineLoser()} padł.`;
+                gameOverScreen.style.visibility = 'visible';
+            }
+
+            function updatePositions() {
+                if (gameState.state != 'running' || window.blurred) return;
+                gameState.czerwony += gameState.speed;
+                gameState.niebieski += gameState.speed;
+                czerwony.style.top = gameState.czerwony + 'vh';
+                niebieski.style.top = gameState.niebieski + 'vh';
+            };
+
+            (gameSetup)();
+        </script>
+	</body>
+</html>
